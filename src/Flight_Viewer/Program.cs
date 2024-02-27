@@ -1,4 +1,6 @@
-﻿using Flight_Viewer;
+﻿using System.Numerics;
+using Flight_Viewer;
+using OpenTK.Mathematics;
 
 namespace FlightViewer
 {
@@ -6,7 +8,8 @@ namespace FlightViewer
     {
         static void Main(string[] args)
         {
-            Game game = new Game();
+            List<OpenTK.Mathematics.Vector3> flightPath = Loader.Load("400813.json");
+            Game game = new Game(flightPath);
             game.Run();
         }
     }

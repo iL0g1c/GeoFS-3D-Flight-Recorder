@@ -2,8 +2,12 @@ import json
 import os
 
 def appendEntry(entry):
-    print(entry)
     logPath = f"{entry['account']}.json"
-        
-    with open(logPath, "a+") as file:
-        file.write(json.dumps(entry) + "\n")
+    if not os.path.exists(logPath):
+        with open(logPath, "w") as file:
+            json.dump([], file)
+    with open(logPath, "r") as file:
+        data = json.load(file)
+        data.append(entry)
+    with open(logPath, "w") as file:
+        json.dump(data, file)
