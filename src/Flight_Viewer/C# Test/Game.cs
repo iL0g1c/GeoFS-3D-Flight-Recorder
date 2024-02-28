@@ -69,6 +69,26 @@ namespace Flight_Viewer
             GL.End();
 
             SwapBuffers();
+
+            var error = GL.GetError();
+            if (error != ErrorCode.NoError)
+            {
+                Console.WriteLine($"Error after drawing flight path: {error}");
+                // You can add more specific error checks here
+                switch (error)
+                {
+                    case ErrorCode.InvalidEnum:
+                        Console.WriteLine("Invalid Enum: An unacceptable value is specified for an enumerated argument.");
+                        break;
+                    case ErrorCode.InvalidValue:
+                        Console.WriteLine("Invalid Value: A numeric argument is out of range.");
+                        break;
+                    case ErrorCode.InvalidOperation:
+                        Console.WriteLine("Invalid Operation: The specified operation is not allowed in the current state.");
+                        break;
+                    // Add more cases for other possible errors
+                }
+            }
         }
     }
 }

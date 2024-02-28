@@ -10,6 +10,7 @@ namespace Flight_Viewer
     {
         public static List<OpenTK.Mathematics.Vector3> Load(string logFile)
         {
+            const float EARTH_RADIUS = 6371000.0f;
             Console.WriteLine("Loading Movement File...");
             // Load the file.
             string json = System.IO.File.ReadAllText(logFile);
@@ -20,7 +21,12 @@ namespace Flight_Viewer
             // Process the data.
             foreach (var item in data)
             {
-                positions.Add(new OpenTK.Mathematics.Vector3(Convert.ToSingle(item.latitude.Value), Convert.ToSingle(item.longitude.Value), Convert.ToSingle(item.altitude.Value)));
+                OpenTK.Mathematics.Vector3 cartesianCoordinates = new OpenTK.Mathematics.Vector3(
+                    Convert.ToSingle((EARTH_RADIUS + item.altitude.Value) * Math.Cos(item.latitude.Value) * Math.Cos(item.longitude.Value)),
+                    Convert.ToSingle((EARTH_RADIUS + item.altitude.Value) * Math.Cos(item.latitude.Value) * Math.Sin(item.longitude.Value)),
+                    Convert.ToSingle((EARTH_RADIUS + item.altitude.Value) * Math.Sin(item.latitude.Value - EARTH_RADIUS))
+                );
+                positions.Add(cartesianCoordinates);
             }
             return positions;
         }
