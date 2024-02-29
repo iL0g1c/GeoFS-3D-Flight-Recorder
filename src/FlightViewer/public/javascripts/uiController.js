@@ -10,14 +10,12 @@ class UIController {
         ];
         this.onlineUsers = [];
         this.checkboxStates = {};
+
         this.updateList = this.updateList.bind(this);
         this.fetchOnlineUsers();
-        document.getElementById('search-input').addEventListener('input', this.updateList);
-
-        this.updateOnlineUsersInterval = setInterval(() => {
-            this.fetchOnlineUsers();
-            console.log(this.selectedUsers);
-        }, 5000);
+        document.getElementById('refresh-user').addEventListener('click', this.fetchOnlineUsers.bind(this));
+        document.getElementById('search-input').addEventListener('input', this.updateList.bind(this));
+        document.getElementById('toggle-tracking').addEventListener('click', this.toggleTracking.bind(this));
     }
 
     async fetchOnlineUsers() {
@@ -75,6 +73,11 @@ class UIController {
                 this.checkboxStates[item[1]] = checkbox.checked;
             }
         });
+    }
+
+    toggleTracking() {
+        this.getSelectedUsers();
+        console.log(this.selectedUsers);
     }
 
     getSelectedUsers() {
