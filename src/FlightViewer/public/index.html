@@ -12,6 +12,7 @@
     <script type="module" src="javascripts/renderer.js"></script>
     <script type="module" src="javascripts/uiController.js"></script>
     <script type="module" src="javascripts/main.js"></script>
+    <script src="javascripts/tools.js"></script>
     <div id="wrapper">
       <div id="title-bar">
         <h1>GeoFS Flight Path Renderer</h1>
@@ -19,6 +20,8 @@
       </div>
       <div id="renderer">
         <h2>View flight path</h2>
+        <div id="camera-details"></div>
+        <p>Movement Speed Multiplier: <input type="text" value="0.1" id="speed-input"></p>
       </div>
       <div id="renderer-ui">
         <h2>Controls</h2>
@@ -29,10 +32,11 @@
           </div>
           <div class="box">
             <p>Start Render</p>
-            <button id="render-toggle">Start Render</button>
+            <button id="toggle-render">Start Render</button>
           </div>
           <div class="box">
-
+            <p>Jump to closest origin</p>
+            <button id="jump-to-origin">Jump</button>
           </div>
         </div>
       
@@ -47,7 +51,7 @@
             <button id="toggle-tracking">Start Tracking</button>
           </div>
           <div class="box">
-            <button id="save-flight-path" onclick="uiController.downloadFlightPath()">Save Flight Path</button>
+            <button id="save-flight-path">Save Flight Path</button>
           </div>
         </div>
       

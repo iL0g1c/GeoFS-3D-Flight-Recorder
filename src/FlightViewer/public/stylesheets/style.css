@@ -3,18 +3,19 @@ body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
-#wrapper {
-  text-align: center;
-}
-
 #title-bar {
   margin: 0 auto;
+  text-align: center;
 }
 
 #renderer {
   margin: 100px auto;
   position: relative;
   align-items: left;
+}
+
+#camera-details {
+  text-align: left;
 }
 
 #renderer-ui {

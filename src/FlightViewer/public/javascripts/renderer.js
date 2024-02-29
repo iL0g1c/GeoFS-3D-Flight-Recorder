@@ -1,6 +1,13 @@
 import * as THREE from '../javascripts/three.module.js';
 import { FlyControls } from '../javascripts/FlyControls.js';
-import { UIController} from '../javascripts/uiController.js';
+
+class FightPath {
+    constructor(flightPath) {
+        this.geometry = new THREE.BufferGeometry().setFromPoints(flightPath);
+        this.material = new THREE.LineBasicMaterial({ color: 0x00ff00 });
+        this.line = new THREE.Line(this.geometry, this.material);
+    }
+}
 
 class Renderer {
     constructor(Width, Height) {
@@ -28,6 +35,17 @@ class Renderer {
             x: 0,
             y: 0
         };
+
+        // Create skybox
+        const cubeTexture = new THREE.CubeTextureLoader().load([
+            'images/skybox.jpg',
+            'images/skybox.jpg',
+            'images/skybox.jpg',
+            'images/skybox.jpg',
+            'images/skybox.jpg',
+            'images/skybox.jpg'
+        ])
+        this.scene.background = cubeTexture;
 
         document.addEventListener('mousedown', function (event) {
             this.isDragging = true;
@@ -60,14 +78,14 @@ class Renderer {
         });
     }
 
-    bindLine(pointsArray) {
-        if (pointsArray != undefined) {
-            // Create the line and geometry
-            this.geometry = new THREE.BufferGeometry().setFromPoints(pointsArray);
-            this.material = new THREE.LineBasicMaterial({ color: 0x00ff00 });
-
-            this.line = new THREE.Line(this.geometry, this.material);
-            this.scene.add(this.line);
+    bindLines(flightPath) {
+        for( var i = this.scene.children.length - 1; i >= 0; i--) { 
+            let obj = this.scene.children[i];
+            this.scene.remove(obj); 
+        }
+        const users = Object.keys(flightPath);
+        for (let i = 0; i < users.length; i++) {
+            this.scene.add(new FightPath(flightPath[users[i]]).line);
         }
     }
 
