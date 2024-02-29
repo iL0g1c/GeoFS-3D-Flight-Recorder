@@ -10,9 +10,52 @@
     <script type="module" src="javascripts/three.module.js"></script>
     <script type="module" src="javascripts/FlyControls.js"></script>
     <script type="module" src="javascripts/renderer.js"></script>
-    <center>
-      <h1>GeoFS Flight Path Renderer</h1>
-      <p>United States Airforce Research and Development</p>
-    </center>
+    <script type="module" src="javascripts/uiController.js"></script>
+    <script type="module" src="javascripts/main.js"></script>
+    <div id="wrapper">
+      <div id="title-bar">
+        <h1>GeoFS Flight Path Renderer</h1>
+        <p>United States Airforce Research and Development</p>
+      </div>
+      <div id="renderer">
+        <h2>View flight path</h2>
+      </div>
+      <div id="renderer-ui">
+        <h2>Controls</h2>
+        <div class="row">
+          <div class="box">
+            <p>Upload flight path</p>
+            <input type="file" id="file-input" accept=".json">
+          </div>
+          <div class="box">
+            <p>Start Render</p>
+            <button id="render-toggle">Start Render</button>
+          </div>
+          <div class="box">
+
+          </div>
+        </div>
+      
+        <div class="row">
+          <div class="box" id="user-selector">
+            <p>Online Users</p>
+            <input type="text" id="search-input" placeholder="Search...">
+            <div id="user-list"></div>
+          </div>
+          <div class="box">
+            <button id="toggle-tracking">Start Tracking</button>
+          </div>
+          <div class="box">
+            <button id="save-flight-path" onclick="uiController.downloadFlightPath()">Save Flight Path</button>
+          </div>
+        </div>
+      
+        <div class="row">
+          <div class="box"></div>
+          <div class="box"></div>
+          <div class="box"></div>
+        </div>
+      </div>
+    </div>
   </body>
 </html>

@@ -3,11 +3,58 @@ body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
-#canvas-container {
+#wrapper {
+  text-align: center;
+}
+
+#title-bar {
+  margin: 0 auto;
+}
+
+#renderer {
+  margin: 100px auto;
+  position: relative;
+  align-items: left;
+}
+
+#renderer-ui {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   margin: 100px auto;
   position: relative;
 }
 
-a {
-  color: #00B7FF;
+.row {
+  display: flex;
+  margin: 10px;
+}
+
+.box {
+  padding: 10px;
+  border: 1px solid #ccc;
+  margin: 5px;
+}
+
+#user-selector {
+  width: 300px;
+  border: 1px solid #ccc;
+  padding: 10px;
+}
+
+#search-input {
+  width: 80%;
+  padding: 5px;
+  margin-bottom: 10px;
+}
+
+#user-list {
+  display: flex;
+  flex-direction: column;
+  max-height: 200px;
+  overflow-y: auto;
+  text-align: left;
+}
+#user-list div {
+  margin-bottom: 5px;
 }

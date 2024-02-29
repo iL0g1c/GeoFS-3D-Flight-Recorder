@@ -1,97 +1,82 @@
 import * as THREE from '../javascripts/three.module.js';
 import { FlyControls } from '../javascripts/FlyControls.js';
+import { UIController} from '../javascripts/uiController.js';
 
-function setup() {
-    // Set up the scene
-    const canvasWidth = window.innerWidth - 100;
-    const canvasHeight = window.innerHeight - 100;
-    const scene = new THREE.Scene();
+class Renderer {
+    constructor(Width, Height) {
+        // Set up the scene
+        this.canvasWidth = Width;
+        this.canvasHeight = Height;
+        this.scene = new THREE.Scene();
 
-    // Set up the camera
-    const camera = new THREE.PerspectiveCamera(75, canvasWidth / canvasHeight, 0.1, 1000);
-    camera.position.z = 5;
-
-    // Create the renderer
-    const renderer = new THREE.WebGLRenderer();
-    renderer.setSize(canvasWidth, canvasHeight);
-    document.body.appendChild(renderer.domElement);
-
-    // Setup controls
-    const controls = new FlyControls(camera, renderer.domElement);
-    controls.dragToLook = true;
-    controls.movementSpeed = 0.1;
-    controls.rollSpeed = 0.01;
-
-    // Test points
-    const pointsArray = [
-        new THREE.Vector3(0, 0, 0),
-        new THREE.Vector3(0, 1, 0),
-        new THREE.Vector3(0, 1, 1),
-        new THREE.Vector3(0, 0, 1),
-    ];
-
-    // Create the line and geometry
-    const geometry = new THREE.BufferGeometry().setFromPoints(pointsArray);
-    const material = new THREE.LineBasicMaterial({ color: 0x00ff00 });
-
-    const line = new THREE.Line(geometry, material);
-    scene.add(line);
-
-    // Allow window resizing
-    window.addEventListener('resize', function () {
-        const newWidth = this.canvasWidth;
-        const newHeight = this.canvasHeight;
-
-        camera.aspect = newWidth / newHeight;
-        camera.updateProjectionMatrix();
+        // Set up the camera
+        this.camera = new THREE.PerspectiveCamera(75, this.canvasWidth / this.canvasHeight, 0.1, 1000);
+        this.camera.position.z = 5;
         
-        renderer.setSize(newWidth, newHeight);
-    });
+        // Set up the renderer
+        this.renderer = new THREE.WebGLRenderer();
+        this.renderer.setSize(this.canvasWidth, this.canvasHeight);
+        document.getElementById('renderer').appendChild(this.renderer.domElement);
 
-    let isDragging = false;
-    let previousMousePosition = {
-        x: 0,
-        y: 0
-    };
-
-    document.addEventListener('mousedown', function (event) {
-        isDragging = true;
-        previousMousePosition = {
-            x: event.clientX,
-            y: event.clientY
+        // Set up the controls
+        this.controls = new FlyControls(this.camera, this.renderer.domElement);
+        this.controls.dragToLook = true;
+        this.controls.movementSpeed = 0.1;
+        this.controls.rollSpeed = 0.01;
+        this.isDragging = false;
+        this.previousMousePosition = {
+            x: 0,
+            y: 0
         };
-    });
 
-    document.addEventListener('mouseup', function () {
-        isDragging = false;
-    });
-
-    document.addEventListener('mousemove', function (event) {
-        if (isDragging) {
-            const deltaMove = {
-                x: event.clientX - previousMousePosition.x,
-                y: event.clientY - previousMousePosition.y
-            };
-    
-            // Rotate the camera by a fixed angle
-            controls.object.rotation.y -= deltaMove.x * 0.01;
-            controls.object.rotation.x -= deltaMove.y * 0.01;
-    
-            previousMousePosition = {
+        document.addEventListener('mousedown', function (event) {
+            this.isDragging = true;
+            this.previousMousePosition = {
                 x: event.clientX,
                 y: event.clientY
             };
-        }
-    });
+        });
 
-    // Start animation
-    const animate = function () {
-        requestAnimationFrame(animate);
-        controls.update(1);
-        renderer.render(scene, camera);
+        document.addEventListener('mouseup', function () {
+            this.isDragging = false;
+        });
+
+        document.addEventListener('mousemove', function (event) {
+            if (this.isDragging) {
+                this.deltaMove = {
+                    x: event.clientX - this.previousMousePosition.x,
+                    y: event.clientY - this.previousMousePosition.y
+                };
+        
+                // Rotate the camera by a fixed angle
+                this.controls.object.rotation.y -= this.deltaMove.x * 0.01;
+                this.controls.object.rotation.x -= this.deltaMove.y * 0.01;
+        
+                this.previousMousePosition = {
+                    x: event.clientX,
+                    y: event.clientY
+                };
+            }
+        });
     }
 
-    animate();
+    bindLine(pointsArray) {
+        if (pointsArray != undefined) {
+            // Create the line and geometry
+            this.geometry = new THREE.BufferGeometry().setFromPoints(pointsArray);
+            this.material = new THREE.LineBasicMaterial({ color: 0x00ff00 });
+
+            this.line = new THREE.Line(this.geometry, this.material);
+            this.scene.add(this.line);
+        }
+    }
+
+    // Start animation
+    animate = () => {
+        requestAnimationFrame(this.animate);
+        this.controls.update(1);
+        this.renderer.render(this.scene, this.camera);
+    }
 }
 
-setup();
+export { Renderer };
