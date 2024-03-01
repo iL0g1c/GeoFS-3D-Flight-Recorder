@@ -1,7 +1,5 @@
-// Allow teleporting to origin of line
-// Allow flight speed control
-// Modify line position to set the closest point to 0,0,0 to 0,0,0
-// add a grid
+// Allow flight speed control with scroll wheel
+// Fix bug where closest origin is not being moved to 0,0,0
 
 import * as THREE from '../javascripts/three.module.js';
 import { Logger } from '../javascripts/logger.js';
@@ -32,6 +30,7 @@ class UIController {
 
         const renderCanvas = this.mainRenderer.renderer.domElement;
         renderCanvas.addEventListener('keydown', this.preventScrolling.bind(this));
+        renderCanvas.addEventListener('wheel', this.handleWheelScroll.bind(this));
         renderCanvas.setAttribute('tabindex', '0');
 
         this.updateCameraPosition();
@@ -229,16 +228,26 @@ class UIController {
         }
         update.call(this);
     }
-
-    changeSpeed() {
+    changeSpeed(increment = true) {
         const speedInput = document.getElementById('speed-input');
-        const speedValue = parseFloat(speedInput.value); // Convert to number
-
+        let speedValue = parseFloat(speedInput.value); // Convert to number
+    
         if (!isNaN(speedValue) && speedValue >= 0.1 && speedValue < 1000) {
+            if (increment) {
+                // Increase speed
+                speedValue += 0.1;
+            } else {
+                // Decrease speed, ensure it doesn't go below 0.1
+                speedValue = Math.max(0.1, speedValue - 0.1);
+            }
+    
+            // Update input box value
+            speedInput.value = speedValue.toFixed(2);
+    
+            // Set the new speed to controls
             this.mainRenderer.controls.movementSpeed = speedValue;
+            console.log(this.mainRenderer.controls.movementSpeed);
         }
-
-        console.log(this.mainRenderer.controls.movementSpeed);
     }
 
     jumpToClosestOrigin() {
@@ -263,6 +272,12 @@ class UIController {
         if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
             event.preventDefault();
         }
+    }
+
+    handleWheelScroll(event) {
+        event.preventDefault();
+        const speedChange = event.deltaY > 0 ? -0.1 : 0.1;
+        this.changeSpeed(speedChange < 0);
     }
 }
 
