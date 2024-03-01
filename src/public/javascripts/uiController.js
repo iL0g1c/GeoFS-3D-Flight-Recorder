@@ -1,5 +1,6 @@
-// Allow flight speed control with scroll wheel
+// make scroll wheel exponential
 // Fix bug where closest origin is not being moved to 0,0,0
+// Add window to view logging data.
 
 import * as THREE from '../javascripts/three.module.js';
 import { Logger } from '../javascripts/logger.js';
@@ -275,9 +276,30 @@ class UIController {
     }
 
     handleWheelScroll(event) {
-        event.preventDefault();
-        const speedChange = event.deltaY > 0 ? -0.1 : 0.1;
-        this.changeSpeed(speedChange < 0);
+        const delta = Math.sign(event.deltaY); // Get the direction of the scroll (1 or -1)
+        const speedInput = document.getElementById('speed-input');
+        let speedValue = parseFloat(speedInput.value); // Convert to number
+
+        if (!isNaN(speedValue) && speedValue >= 0.1 && speedValue <= 1000) {
+            // Exponential speed increase
+            speedValue *= Math.pow(0.1, delta * 0.1);
+
+            if (speedValue < 0.1) {
+                speedValue = 0.1;
+            }
+            if (speedValue > 1000) {
+                speedValue = 1000;
+            }
+
+            // Update input box value
+            speedInput.value = speedValue.toFixed(2);
+
+            // Set the new speed to controls
+            this.mainRenderer.controls.movementSpeed = speedValue;
+            console.log(this.mainRenderer.controls.movementSpeed);
+        }
+
+        event.preventDefault(); // Prevent the default scroll behavior
     }
 }
 

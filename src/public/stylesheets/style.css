@@ -1,53 +1,95 @@
 body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background-color: #333333;
+  color: #ffffff;
+}
+
+#wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80%;
+  margin: 0 auto;
+  background-color: #444444;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  padding: 20px;
+  border-radius: 10px;
 }
 
 #title-bar {
-  margin: 0 auto;
+  margin: 20px auto;
   text-align: center;
+  color: #ffffff;
+  border-radius: 10px;
 }
 
 #renderer {
-  margin: 100px auto;
+  margin: 20px;
   position: relative;
-  align-items: left;
+  align-items: center;
+  background-color: #555555;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  padding: 30px;
+  border-radius: 10px;
 }
 
 #camera-details {
   text-align: left;
+  border-radius: 10px;
 }
 
 #renderer-ui {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 100px auto;
+  margin: 20px auto;
   position: relative;
+  background-color: #555555;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  padding: 30px;
+  border-radius: 10px;
+  
 }
 
 .row {
   display: flex;
   margin: 10px;
+  border-radius: 10px;
+}
+
+p {
+  background-color: #222222;
+  width: fit-content;
+  border-radius: 10px;
+  padding: 5px;
 }
 
 .box {
-  padding: 10px;
-  border: 1px solid #ccc;
-  margin: 5px;
+  padding: 30px;
+  border: 1px solid #666666;
+  margin: 10px;
+  background-color: #777777;
+  border-radius: 10px;
 }
 
 #user-selector {
   width: 300px;
-  border: 1px solid #ccc;
-  padding: 10px;
+  border: 1px solid #666666;
+  padding: 30px;
+  border-radius: 10px;
 }
 
 #search-input {
-  width: 80%;
-  padding: 5px;
-  margin-bottom: 10px;
+  width: calc(100% - 20px);
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #666666;
 }
+
 
 #user-list {
   display: flex;
@@ -55,7 +97,54 @@ body {
   max-height: 200px;
   overflow-y: auto;
   text-align: left;
+  background-color: #555555;
+  border-radius: 10px;
 }
 #user-list div {
-  margin-bottom: 5px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+}
+
+/* Add these styles for button stylization */
+
+button {
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  color: #ffffff;
+}
+
+button:hover {
+  background-color: #666666;
+}
+
+#toggle-render,
+#jump-to-origin,
+#refresh-user,
+#toggle-tracking,
+#save-flight-path {
+  background-color: #4285f4; /* You can replace this color with your desired button color */
+}
+
+#toggle-render:hover,
+#jump-to-origin:hover,
+#refresh-user:hover,
+#toggle-tracking:hover,
+#save-flight-path:hover {
+  background-color: #3b6eac; /* You can replace this color with a slightly darker shade for the hover effect */
+}
+
+/* Adjusting other styles for consistency */
+
+#file-input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 5px;
+  background-color: #4285f4;
+}
+
+#file-input:hover {
+  background-color: #3b6eac;
 }
