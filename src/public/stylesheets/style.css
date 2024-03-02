@@ -148,3 +148,13 @@ button:hover {
 #file-input:hover {
   background-color: #3b6eac;
 }
+
+#tracking-window {
+  display: flex;
+  flex-direction: column;
+  max-height: 200px;
+  overflow-y: auto;
+  text-align: left;
+  background-color: #555555;
+  border-radius: 10px;
+}

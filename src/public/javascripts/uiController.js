@@ -1,5 +1,4 @@
-// make scroll wheel exponential
-// Fix bug where closest origin is not being moved to 0,0,0
+// Fix bug where closest origin is not being moved to 0,0,0*
 // Add window to view logging data.
 
 import * as THREE from '../javascripts/three.module.js';
@@ -108,8 +107,12 @@ class UIController {
                     reject(error);
                 }
             };
-    
-            reader.readAsText(flightPathFile);
+            try {
+                reader.readAsText(flightPathFile);
+            } catch (error) {
+                alert("Unable to mount flight path. Did you not upload a file?");
+                reject(error);
+            }
         });
     }
 
@@ -147,17 +150,39 @@ class UIController {
         await this.trackUsers();
     }
 
+    insertFlightPathLog() {
+        const flightPathLogWindow = document.getElementById('tracking-window');
+        if (!flightPathLogWindow) {
+            // Create a new div for the flight path log
+            const logWindow = document.createElement('div');
+            document.getElementById('renderer-ui').appendChild(logWindow);
+        }
+
+        // Clear previous content
+        flightPathLogWindow.innerHTML = '';
+
+        // Paste flight path line by line
+        const flightPaths = Object.keys(this.flightPath);
+        flightPaths.forEach((userId) => {
+            this.flightPath[userId].forEach((position) => {
+                const logEntry = document.createElement('div');
+                logEntry.textContent = `User ${userId}: ${position.x.toFixed(2)}, ${position.y.toFixed(2)}, ${position.z.toFixed(2)}`;
+                flightPathLogWindow.appendChild(logEntry);
+            });
+        });
+    }
+    }
+
     toggleRender() {
         if (this.render) {
+            this.mainRenderer.unBindLines(this.flightPath);
             this.render = false;
-            document.getElementById('toggle-render').innerText = 'Start Rendering';
+            document.getElementById('toggle-render').innerText = 'Mount Flight Path';
             return;
         }
-    
-        this.render = true;
         this.loadFlightPath().then(() => {
-            console.log(this.flightPath);
-            document.getElementById('toggle-render').innerText = 'Stop Rendering';
+            this.render = true;
+            document.getElementById('toggle-render').innerText = 'Unmount Flight Path';
             this.mainRenderer.bindLines(this.flightPath);
         }).catch((error) => {
             console.error('Error loading flight path:', error);

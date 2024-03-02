@@ -78,11 +78,14 @@ class Renderer {
         });
     }
 
-    bindLines(flightPath) {
+    unBindLines(flightPath) {
         for( var i = this.scene.children.length - 1; i >= 0; i--) { 
             let obj = this.scene.children[i];
             this.scene.remove(obj); 
         }
+    }
+
+    bindLines(flightPath) {
         const users = Object.keys(flightPath);
         for (let i = 0; i < users.length; i++) {
             this.scene.add(new FightPath(flightPath[users[i]]).line);
